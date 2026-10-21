@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cartelera Perú</title>
+  <meta name="description" content="Horarios de Cinemark, Cinépolis, Cinestar, UVK y Cinerama en una sola página.">
+  <meta name="referrer" content="no-referrer">
+  <meta name="color-scheme" content="light dark">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <h1><span aria-hidden="true">🎬</span> Cartelera Perú</h1>
+      <p class="sub">Todas las funciones de Cinemark, Cinépolis, Cinestar, UVK y Cinerama en un solo lugar</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="filters" aria-label="Filtros">
+      <div class="dates" id="dates" role="group" aria-label="Fecha"></div>
+
+      <div class="row">
+        <label class="field">
+          <span>Ciudad</span>
+          <select id="city"></select>
+        </label>
+        <label class="field grow">
+          <span>Buscar</span>
+          <input id="query" type="search" placeholder="Película o cine…" autocomplete="off">
+        </label>
+        <div class="field">
+          <span>Ver por</span>
+          <div class="toggle" role="group" aria-label="Ver por">
+            <button type="button" data-view="movies" aria-pressed="true">Película</button>
+            <button type="button" data-view="cinemas" aria-pressed="false">Cine</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chains" id="chains" role="group" aria-label="Cadenas"></div>
+    </section>
+
+    <p id="status" class="status" role="status" aria-live="polite">Cargando cartelera…</p>
+    <div id="results" class="results"></div>
+    <p id="empty" class="empty" hidden>No hay funciones con estos filtros.</p>
+  </main>
+
+  <footer class="wrap foot">
+    <p id="sources" class="sources"></p>
+    <p>
+      Datos tomados de las páginas públicas de cada cadena; los horarios pueden
+      cambiar. Confirma siempre en el sitio oficial antes de ir. Sitio no
+      afiliado a ninguna cadena. <a href="/legal.html">Aviso legal</a>.
+    </p>
+  </footer>
+</body>
+</html>

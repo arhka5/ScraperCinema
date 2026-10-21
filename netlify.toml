@@ -1,0 +1,7 @@
+# Sitio estático: no hay paso de compilación.
+# Los datos NO se publican aquí: la web los lee de la rama "data" en GitHub,
+# así actualizar la cartelera no consume publicaciones de Netlify.
+[build]
+  publish = "web"
+  # Solo publicar si cambió la web (no por cambios del scraper o la doc).
+  ignore = "git diff --quiet $CACHED_COMMIT_REF $COMMIT_REF -- web/ netlify.toml"

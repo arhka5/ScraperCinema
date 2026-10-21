@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+out/
+previous.json
+# Copia local de los datos para probar la web
+web/cartelera.json
+.netlify/
+.DS_Store
+Thumbs.db

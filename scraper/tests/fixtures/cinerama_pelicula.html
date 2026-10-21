@@ -1,0 +1,491 @@
+
+
+
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinerama - Detalles de Película</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Magnific Popup CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #dc3545;
+            --dark-red: #b02a37;
+            --light-bg: #f8f9fa;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+        }
+        
+        .navbar {
+            background-color: var(--primary-red) !important;
+        }
+        
+        .btn-custom {
+            background-color: var(--primary-red);
+            color: white;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-custom:hover {
+            background-color: var(--dark-red);
+            color: white;
+        }
+        
+        .card {
+            transition: transform 0.3s ease;
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pelicula-info {
+            padding: 20px;
+        }
+
+        .pelicula-titulo {
+            color: var(--dark-red);
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            padding: 8px 15px;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .horarios-container {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+        }
+
+        .cinema-block {
+            border-bottom: 1px solid #eee;
+            padding: 20px 0;
+        }
+
+        .cinema-block:last-child {
+            border-bottom: none;
+        }
+
+        .cinema-name {
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .horario-btn {
+            margin: 5px;
+            min-width: 90px;
+            transition: all 0.3s ease;
+        }
+
+        .horario-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .trailer-btn {
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .footer {
+        background-color: #1a1a1a;
+        color: #fff;
+        padding: 3rem 0 0;
+    }
+
+    .footer .widget {
+        margin-bottom: 2rem;
+    }
+
+    .footer .widget p {
+        color: rgba(255,255,255,0.8);
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
+
+    .footer hr {
+        border-color: rgba(255,255,255,0.1);
+        margin: 2rem 0;
+    }
+
+    .copyright {
+        background-color: #141414;
+        padding: 1.5rem 0;
+    }
+
+    .copyright-content {
+        color: rgba(255,255,255,0.7);
+        font-size: 0.9rem;
+    }
+
+    .copyright-content a {
+        color: var(--primary-red);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .copyright-content a:hover {
+        color: var(--dark-red);
+    }
+
+    .scrollToTop {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--primary-red);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: all 0.3s ease;
+    }
+
+    .scrollToTop:hover {
+        color: var(--dark-red);
+        transform: translateY(-2px);
+    }
+
+    .scrollToTop i {
+        font-size: 1rem;
+        margin-left: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .footer {
+            padding: 2rem 0 0;
+        }
+
+        .copyright-content {
+            text-align: center !important;
+            margin-bottom: 1rem;
+        }
+
+        .text-lg-right {
+            text-align: center !important;
+        }
+    }
+
+    .card {
+    transition: transform 0.3s ease;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+}
+
+.img-fluid {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    max-height: 600px;
+}
+
+.pelicula-info {
+    padding: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.pelicula-titulo {
+    color: var(--dark-red);
+    margin-bottom: 20px;
+    font-size: 2rem;
+    word-wrap: break-word;
+}
+
+.trailer-btn {
+    margin-top: 15px;
+    width: 100%;
+    position: relative;
+    z-index: 2;
+}
+
+@media (max-width: 768px) {
+    .pelicula-titulo {
+        font-size: 1.5rem;
+    }
+    
+    .img-fluid {
+        max-height: 400px;
+    }
+    
+    .pelicula-info {
+        padding: 15px;
+    }
+    
+    .badge {
+        margin-bottom: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .pelicula-titulo {
+        font-size: 1.25rem;
+    }
+    
+    .img-fluid {
+        max-height: 300px;
+    }
+    
+    .pelicula-info {
+        padding: 10px;
+    }
+    
+    .trailer-btn {
+        margin-top: 10px;
+        padding: 8px 15px;
+    }
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black !important; font-size: 16px">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="https://www.cinerama.com.pe/assets/img/logo2.png" alt="Cineramas Logo" width="200px" style="height: 80px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.cinerama.com.pe/cines">Cine</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.cinerama.com.pe/cartelera">Cartelera</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.cinerama.com.pe/estrenos">Estrenos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.cinerama.com.pe/contacto">Contáctenos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>    <div id="mainSlider" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators" id="sliderIndicators">
+            <!-- Los indicadores se cargarán dinámicamente -->
+        </div>
+        <div class="carousel-inner" id="sliderInner">
+            <!-- Las imágenes se cargarán dinámicamente -->
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainSlider" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainSlider" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+    <div class="container py-5">
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="https://www.cinerama.com.pe/_admin/assets/images/peliculas/street_fighter-871613292-large.jpg" 
+                         class="img-fluid" 
+                         alt="STREET FIGHTER">
+                    <a href="https://www.youtube.com/watch?v=U6sbm1OaJb8" 
+                       class="btn btn-custom trailer-btn popup-youtube">
+                        <i class="fas fa-play me-2"></i>Ver Trailer
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <div class="pelicula-info">
+                        <h1 class="pelicula-titulo">STREET FIGHTER</h1>
+                        <div class="mb-4">
+                            <span class="badge bg-danger">MAYORES DE 14</span>
+                            <span class="badge bg-primary">ACCION</span>
+                            <span class="badge bg-secondary">ANDES FILMS</span>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <p><i class="fas fa-film me-2 text-danger"></i><strong>Director:</strong> KITAO SAKURAI</p>
+                                <p><i class="fas fa-clock me-2 text-danger"></i><strong>Duración:</strong> 01:25:00</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><i class="fas fa-calendar me-2 text-danger"></i><strong>Estreno:</strong> 2026-10-15</p>
+                                <p><i class="fas fa-users me-2 text-danger"></i><strong>Reparto:</strong> -</p>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="h4 text-danger"><i class="fas fa-align-left me-2"></i>Sinopsis</h3>
+                            <p>BASADA EN LA SAGA DE VIDEOJUEGOS 'STREET FIGHTER' Y AMBIENTADA EN 1993, LOS ALEJADOS STREET FIGHTERS RYU Y KEN MASTERS SON LANZADOS DE NUEVO AL COMBATE CUANDO LA MISTERIOSA CHUN-LI LOS RECLUTA PARA EL PRÓXIMO TORNEO MUNDIAL DE GUERREROS: UN BRUTAL CHOQUE DE PUÑOS, DESTINO Y FURIA. PERO DETRÁS DE ESTA BATALLA SE ESCONDE UNA CONSPIRACIÓN MORTAL QUE LOS OBLIGA A ENFRENTARSE ENTRE ELLOS Y A LOS DEMONIOS DE SUS PASADOS. Y SI NO LO HACEN… ¡FIN DE LA PARTIDA!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="horarios-container">
+            <h2 class="text-center mb-4">Horarios Disponibles</h2>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA MINKA</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA PACIFICO</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA MOYOBAMBA</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA TARAPOTO</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA SOL</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA CHIMBOTE</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA CAJAMARCA</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA CUSCO</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a><a href="#" class="btn btn-danger horario-btn">12:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA HUACHO</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                            <div class="cinema-block">
+                    <h3 class="cinema-name">CINERAMA PIURA</h3>
+                    <div class="mb-3"><h4 class="h6 mb-2">Doblada</h4><div class="d-flex flex-wrap"><a href="#" class="btn btn-danger horario-btn">03:00 PM</a><a href="#" class="btn btn-danger horario-btn">05:15 PM</a><a href="#" class="btn btn-danger horario-btn">07:30 PM</a><a href="#" class="btn btn-danger horario-btn">09:45 PM</a></div></div>                </div>
+                    </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.popup-youtube').magnificPopup({
+                type: 'iframe',
+                mainClass: 'mfp-fade',
+                removalDelay: 160,
+                preloader: false,
+                fixedContentPos: false
+            });
+        });
+    </script>
+      
+<footer class="footer mt-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-sm-6">
+                <div class="widget">
+                    <p>Av. José Pardo 121 Miraflores - Lima - Lima</p>
+                </div>
+            </div>
+        </div>
+        <hr />
+    </div>
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 text-center text-lg-left">
+                    <div class="copyright-content">
+                        <p><a target="_blank" href="#">Todos los derechos reservados</a></p>
+                    </div>
+                </div>
+                <div class="col-lg-6 text-center text-lg-right">
+                    <div class="copyright-content">
+                        <a href="#" class="scrollToTop">
+                            Back to top <i class="fas fa-arrow-up"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer><script>
+      const base_url = "https://www.cinerama.com.pe";
+    </script>
+
+
+
+<script>
+       $(document).ready(function() {
+    
+    function cargarSlider() 
+    {
+                $.ajax({
+                    url: base_url + '/assets/ajax/obtener_slider.php',
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        let indicatorsHtml = '';
+                        let slidesHtml = '';
+                        
+                        response.forEach((slide, index) => {
+                            // Generar indicadores
+                            indicatorsHtml += `
+                                <button type="button" 
+                                        data-bs-target="#mainSlider" 
+                                        data-bs-slide-to="${index}" 
+                                        class="${index === 0 ? 'active' : ''}"
+                                        aria-label="Slide ${index + 1}">
+                                </button>
+                            `;
+                            
+                            // Generar slides
+                            slidesHtml += `
+                                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                                    <img src="../_admin/assets/images/slider/${slide.img}" 
+                                         class="d-block w-100" 
+                                         alt="${slide.titulo || 'Slide ' + (index + 1)}">
+                                </div>
+                            `;
+                        });
+                        
+                        $('#sliderIndicators').html(indicatorsHtml);
+                        $('#sliderInner').html(slidesHtml);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error al cargar el slider:', error);
+                        $('#mainSlider').hide();
+                    }
+                });
+   }
+
+    
+
+    // Función para ver detalles de un cine
+    window.verDetalles = function(nombre) {
+        const local = nombre.split(' ').slice(0, 2).join('_');
+        window.location.href = base_url + '/cartelera_cine/' + local;
+    }
+
+    // Cargar cines al iniciar
+
+    cargarSlider();
+});
+    </script>
+</body>
+</html>
+
+</body>
+</html>
