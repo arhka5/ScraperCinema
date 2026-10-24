@@ -33,14 +33,14 @@ const els = {
 let data = null;
 const state = loadState();
 
-// La vista no se recuerda: al entrar siempre se ven las próximas funciones.
+// La vista no se recuerda: al entrar siempre se ve la cartelera por película.
 function loadState() {
   const defaults = { date: null, city: "Lima", chains: Object.keys(CHAINS) };
   try {
     const { city, chains } = JSON.parse(localStorage.getItem("cartelera") || "{}");
-    return { ...defaults, ...(city !== undefined && { city }), ...(chains && { chains }), view: "next" };
+    return { ...defaults, ...(city !== undefined && { city }), ...(chains && { chains }), view: "movies" };
   } catch {
-    return { ...defaults, view: "next" };
+    return { ...defaults, view: "movies" };
   }
 }
 
@@ -165,6 +165,13 @@ function setup() {
 
   els.city.addEventListener("change", () => { state.city = els.city.value; saveState(); render(); });
   els.query.addEventListener("input", debounce(render, 150));
+  // El botón (o Enter) aplica la búsqueda y cierra el teclado en el celular.
+  $("#search").addEventListener("submit", (e) => {
+    e.preventDefault();
+    render();
+    els.query.blur();
+    els.status.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   els.chains.addEventListener("click", (e) => {
     const button = e.target.closest("[data-chain]");
     if (!button) return;
@@ -265,11 +272,11 @@ function groupBy(list, field) {
 
 function poster(movie) {
   const src = movie?.poster ? safeUrl(movie.poster, IMAGE_HOSTS) : null;
-  if (!src) return el("div", { class: "poster placeholder", "aria-hidden": "true", text: "🎬" });
+  if (!src) return el("div", { class: "poster placeholder", "aria-hidden": "true" });
   const img = el("img", { class: "poster", src, alt: "", loading: "lazy",
     referrerpolicy: "no-referrer", decoding: "async" });
   img.addEventListener("error", () => img.replaceWith(
-    el("div", { class: "poster placeholder", "aria-hidden": "true", text: "🎬" })), { once: true });
+    el("div", { class: "poster placeholder", "aria-hidden": "true" })), { once: true });
   return img;
 }
 

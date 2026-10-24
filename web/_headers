@@ -1,8 +1,9 @@
 # Cabeceras de seguridad (Netlify).
 # connect-src: el JSON de la cartelera vive en la rama "data" de GitHub.
 # img-src: afiches enlazados desde los servidores de cada cadena.
+# font-src: la tipografía (Archivo) se sirve desde el propio sitio.
 /*
-  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self' https://raw.githubusercontent.com; img-src 'self' https://cdn.cinemark-peru.com https://static.cinepolis.com https://bucket.tumi-soft.com https://www.uvk.pe https://uvk.pe https://www.cinerama.com.pe; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; connect-src 'self' https://raw.githubusercontent.com; img-src 'self' https://cdn.cinemark-peru.com https://static.cinepolis.com https://bucket.tumi-soft.com https://www.uvk.pe https://uvk.pe https://www.cinerama.com.pe; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; object-src 'none'; manifest-src 'self'; upgrade-insecure-requests
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: no-referrer

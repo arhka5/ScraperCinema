@@ -1,21 +1,70 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-PE">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Cartelera Perú</title>
-  <meta name="description" content="Horarios de Cinemark, Cinépolis, Cinestar, UVK y Cinerama en una sola página.">
+  <title>Cinehoy: cartelera de cine y horarios en Perú</title>
+  <meta name="description" content="Cartelera de cine de hoy en Lima y provincias. Horarios por película y por cine de Cinemark, Cinépolis, Cinestar, UVK y Cinerama.">
+  <link rel="canonical" href="https://scrapercinema.netlify.app/">
+  <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="referrer" content="no-referrer">
   <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f4f1ea" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#14120f" media="(prefers-color-scheme: dark)">
+  <link rel="preload" href="/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Google Search Console: pegar aquí la etiqueta de verificación, por ejemplo:
+  <meta name="google-site-verification" content="CODIGO"> -->
+  <!-- Bing Webmaster: <meta name="msvalidate.01" content="CODIGO"> -->
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="/styles.css">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_PE">
+  <meta property="og:site_name" content="Cinehoy">
+  <meta property="og:title" content="Cinehoy: cartelera de cine y horarios en Perú">
+  <meta property="og:description" content="Horarios de hoy en Lima y provincias, por película y por cine. Cinemark, Cinépolis, Cinestar, UVK y Cinerama.">
+  <meta property="og:url" content="https://scrapercinema.netlify.app/">
+  <meta property="og:image" content="https://scrapercinema.netlify.app/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cinehoy, cartelera de cine en Perú">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cinehoy: cartelera de cine y horarios en Perú">
+  <meta name="twitter:description" content="Horarios de hoy en Lima y provincias, por película y por cine.">
+  <meta name="twitter:image" content="https://scrapercinema.netlify.app/og.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://scrapercinema.netlify.app/#website",
+        "url": "https://scrapercinema.netlify.app/",
+        "name": "Cinehoy",
+        "alternateName": "Cinehoy Perú",
+        "description": "Cartelera de cine y horarios de funciones en Perú.",
+        "inLanguage": "es-PE"
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://scrapercinema.netlify.app/#webpage",
+        "url": "https://scrapercinema.netlify.app/",
+        "name": "Cinehoy: cartelera de cine y horarios en Perú",
+        "isPartOf": { "@id": "https://scrapercinema.netlify.app/#website" },
+        "inLanguage": "es-PE"
+      }
+    ]
+  }
+  </script>
   <script type="module" src="/app.js"></script>
 </head>
 <body>
   <header class="top">
     <div class="wrap">
-      <h1><span aria-hidden="true">🎬</span> Cartelera Perú</h1>
-      <p class="sub">Todas las funciones de Cinemark, Cinépolis, Cinestar, UVK y Cinerama en un solo lugar</p>
+      <h1>Cinehoy</h1>
+      <p class="sub">Cartelera de cine en Perú: horarios de hoy por película y por cine</p>
     </div>
   </header>
 
@@ -28,15 +77,18 @@
           <span>Ciudad</span>
           <select id="city"></select>
         </label>
-        <label class="field grow">
-          <span>Buscar</span>
-          <input id="query" type="search" placeholder="Película o cine…" autocomplete="off">
-        </label>
+        <div class="field grow">
+          <label for="query">Buscar</label>
+          <form class="search" id="search" role="search">
+            <input id="query" type="search" placeholder="Película o cine…" autocomplete="off" enterkeyhint="search">
+            <button type="submit">Buscar</button>
+          </form>
+        </div>
         <div class="field">
           <span>Ver por</span>
           <div class="toggle" role="group" aria-label="Ver por">
-            <button type="button" data-view="next" aria-pressed="true">Próximas</button>
-            <button type="button" data-view="movies" aria-pressed="false">Película</button>
+            <button type="button" data-view="movies" aria-pressed="true">Película</button>
+            <button type="button" data-view="next" aria-pressed="false">Próximas</button>
             <button type="button" data-view="cinemas" aria-pressed="false">Cine</button>
           </div>
         </div>
@@ -48,14 +100,33 @@
     <p id="status" class="status" role="status" aria-live="polite">Cargando cartelera…</p>
     <div id="results" class="results"></div>
     <p id="empty" class="empty" hidden>No hay funciones con estos filtros.</p>
+
+    <section class="about" aria-labelledby="about-title">
+      <h2 id="about-title">Cartelera de cine en Perú</h2>
+      <p>
+        Cinehoy muestra qué películas hay hoy y a qué hora empiezan. Puedes
+        verlas por película, por cine o por las funciones que empiezan más
+        pronto, y elegir el día.
+      </p>
+      <p>
+        Incluye los cines de Cinemark, Cinépolis, Cinestar, UVK y Cinerama.
+        Hay horarios para Lima y para Arequipa, Trujillo, Cusco, Piura,
+        Huancayo, Ica, Tarapoto, Pucallpa y otras ciudades. Cineplanet no está
+        incluido.
+      </p>
+      <p>
+        No vendemos entradas. Cada función te lleva a la página de la cadena
+        para comprar.
+      </p>
+    </section>
   </main>
 
   <footer class="wrap foot">
     <p id="sources" class="sources"></p>
     <p>
       Datos tomados de las páginas públicas de cada cadena; los horarios pueden
-      cambiar. Confirma siempre en el sitio oficial antes de ir. Sitio no
-      afiliado a ninguna cadena. <a href="/legal.html">Aviso legal</a>.
+      cambiar. Confirma siempre en el sitio oficial antes de ir. Cinehoy no
+      está afiliado a ninguna cadena. <a href="/legal.html">Aviso legal</a>.
     </p>
   </footer>
 </body>

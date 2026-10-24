@@ -1,0 +1,19 @@
+{
+  "name": "Cinehoy",
+  "short_name": "Cinehoy",
+  "description": "Cartelera de cine y horarios en Perú.",
+  "lang": "es-PE",
+  "start_url": "/",
+  "scope": "/",
+  "display": "browser",
+  "background_color": "#f4f1ea",
+  "theme_color": "#f4f1ea",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
