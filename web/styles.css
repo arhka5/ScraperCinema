@@ -210,6 +210,46 @@ a.time:hover { border-color: var(--accent); color: var(--accent); }
 
 .cineplanet { display: inline-block; margin-top: 10px; font-size: 14px; }
 
+/* Vista "Próximas": una tarjeta por cine con su función más cercana. */
+.dates[hidden] { display: none; }
+
+.card.next { display: flex; gap: 14px; padding: 12px; }
+.card.next .poster { width: 60px; height: 88px; }
+.card.next .card-info { flex: 1; }
+.card.next .venue-head { margin-bottom: 6px; }
+.card.next h2 { margin: 0; font-size: 16px; }
+
+.next-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+a.next-main:hover { border-color: var(--accent); }
+.next-when { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.next-when strong { font-size: 22px; line-height: 1.1; }
+.next-until { color: var(--accent); font-weight: 600; font-size: 14px; }
+.next-movie { font-weight: 600; }
+
+.next-more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+.next-more-item { color: var(--text); text-decoration: none; }
+a.next-more-item:hover { color: var(--accent); }
+.next-more-item small { color: var(--muted); }
+
 .empty { padding: 40px 0; text-align: center; color: var(--muted); }
 
 .foot { padding: 28px 0 40px; color: var(--muted); font-size: 13px; }

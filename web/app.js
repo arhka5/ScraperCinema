@@ -33,19 +33,21 @@ const els = {
 let data = null;
 const state = loadState();
 
+// La vista no se recuerda: al entrar siempre se ven las próximas funciones.
 function loadState() {
-  const defaults = { date: null, city: "Lima", chains: Object.keys(CHAINS), view: "movies" };
+  const defaults = { date: null, city: "Lima", chains: Object.keys(CHAINS) };
   try {
-    return { ...defaults, ...JSON.parse(localStorage.getItem("cartelera") || "{}"), date: null };
+    const { city, chains } = JSON.parse(localStorage.getItem("cartelera") || "{}");
+    return { ...defaults, ...(city !== undefined && { city }), ...(chains && { chains }), view: "next" };
   } catch {
-    return defaults;
+    return { ...defaults, view: "next" };
   }
 }
 
 function saveState() {
   try {
-    const { city, chains, view } = state;
-    localStorage.setItem("cartelera", JSON.stringify({ city, chains, view }));
+    const { city, chains } = state;
+    localStorage.setItem("cartelera", JSON.stringify({ city, chains }));
   } catch { /* almacenamiento no disponible */ }
 }
 
@@ -74,6 +76,11 @@ function addDays(iso, n) {
   d.setUTCDate(d.getUTCDate() + n);
   return d.toISOString().slice(0, 10);
 }
+
+const daysBetween = (a, b) => Math.round((Date.parse(`${b}T12:00:00Z`) - Date.parse(`${a}T12:00:00Z`)) / 864e5);
+
+// Minutos que faltan para la función (ambos en "día de cartelera").
+const minutesUntil = (s, now) => daysBetween(now.date, s.date) * 1440 + s.minutes - now.minutes;
 
 // "Día de cartelera": de madrugada sigue siendo el día anterior (trasnoche).
 function carteleraNow() {
@@ -222,6 +229,8 @@ function render() {
   if (!data) return;
   const now = carteleraNow();
   const pool = baseSessions(now);
+  els.dates.hidden = state.view === "next";
+  if (state.view === "next") return renderNext(pool, now);
   renderDates(pool, now);
   const sessions = pool.filter((s) => s.date === state.date);
 
@@ -271,14 +280,23 @@ function meta(movie) {
   return parts.join(" · ");
 }
 
-function sessionLink(s) {
+function sessionHref(s) {
   const movie = data.movieByKey.get(s.movie);
   const cinema = data.cinemaById.get(s.cinema);
-  const href = safeUrl(s.url, LINK_HOSTS) || safeUrl(movie.urls?.[s.chain], LINK_HOSTS) ||
+  return safeUrl(s.url, LINK_HOSTS) || safeUrl(movie?.urls?.[s.chain], LINK_HOSTS) ||
     safeUrl(cinema.url, LINK_HOSTS);
+}
+
+function sessionTags(s) {
   const tags = [];
   if (s.format && s.format !== "2D") tags.push(s.format);
   if (s.language) tags.push(s.language === "Subtitulada" ? "SUB" : "DOB");
+  return tags;
+}
+
+function sessionLink(s) {
+  const href = sessionHref(s);
+  const tags = sessionTags(s);
   const title = [s.time, s.late ? "(trasnoche)" : "", s.format, s.language, s.room,
     `· comprar en ${CHAINS[s.chain]?.name}`].filter(Boolean).join(" ");
   return el(href ? "a" : "span", {
@@ -343,6 +361,88 @@ function cinemaCard(cid, list) {
           plural(list.length, "función", "funciones") }),
         el("div", { class: "badges" }, chainBadge(cinema.chain)))),
     el("div", { class: "card-body" }, rows));
+}
+
+// ---------- próximas funciones (una tarjeta por cine) ----------
+
+const NEXT_MORE = 3; // funciones que se listan después de la más próxima
+
+function untilText(min) {
+  if (min < 1) return "ahora";
+  if (min < 60) return `en ${min} min`;
+  if (min < 180) return `en ${Math.floor(min / 60)} h ${String(min % 60).padStart(2, "0")} min`;
+  return null;
+}
+
+// "21:40" si es hoy; "Mañana 15:00" / "sáb 25/10 15:00" si no.
+function whenText(s, now) {
+  return s.date === now.date ? s.time : `${dateLabel(s.date, now.date)} ${s.time}`;
+}
+
+function renderNext(pool, now) {
+  const byCinema = new Map();
+  for (const s of pool) {
+    if (!byCinema.has(s.cinema)) byCinema.set(s.cinema, []);
+    byCinema.get(s.cinema).push(s);
+  }
+  const order = (a, b) => a.date.localeCompare(b.date) || a.minutes - b.minutes;
+  const entries = [...byCinema.entries()].map(([cid, list]) => [cid, list.sort(order)]);
+  entries.sort(([a, la], [b, lb]) => order(la[0], lb[0]) ||
+    data.cinemaById.get(a).name.localeCompare(data.cinemaById.get(b).name, "es"));
+
+  const cards = entries.map(([cid, list]) => nextCard(cid, list, now));
+  els.results.replaceChildren(...cards);
+  els.empty.hidden = cards.length > 0;
+  const nowText = `${String(Math.floor(now.minutes / 60) % 24).padStart(2, "0")}:` +
+    String(now.minutes % 60).padStart(2, "0");
+  els.status.classList.remove("error");
+  els.status.textContent = `Próxima función en ${plural(cards.length, "cine", "cines")} · ` +
+    `son las ${nowText}`;
+}
+
+function nextCard(cid, list, now) {
+  const cinema = data.cinemaById.get(cid);
+  const [first, ...rest] = list;
+  const movie = data.movieByKey.get(first.movie);
+  const until = untilText(minutesUntil(first, now));
+  const href = sessionHref(first);
+  const tags = sessionTags(first);
+  const details = [meta(movie || {}), tags.join(" · "), first.room].filter(Boolean).join(" · ");
+
+  const main = el(href ? "a" : "div", {
+    class: "next-main", href, target: href ? "_blank" : null,
+    rel: href ? "noopener noreferrer" : null,
+    title: href ? `Comprar en ${CHAINS[cinema.chain]?.name}` : null,
+  },
+  el("span", { class: "next-when" },
+    el("strong", { text: whenText(first, now) }),
+    until ? el("span", { class: "next-until", text: until }) : null,
+    first.late ? el("span", { class: "muted", text: "trasnoche" }) : null),
+  el("span", { class: "next-movie", text: movie?.title || "Función" }),
+  details ? el("span", { class: "muted", text: details }) : null);
+
+  const more = rest.slice(0, NEXT_MORE).map((s) => {
+    const h = sessionHref(s);
+    const t = sessionTags(s);
+    return el(h ? "a" : "span", {
+      class: "next-more-item", href: h, target: h ? "_blank" : null,
+      rel: h ? "noopener noreferrer" : null,
+    },
+    el("strong", { text: whenText(s, now) }),
+    ` ${data.movieByKey.get(s.movie)?.title || ""}`,
+    t.length ? el("small", { text: ` ${t.join(" · ")}` }) : null);
+  });
+
+  return el("article", { class: "card next" },
+    poster(movie),
+    el("div", { class: "card-info" },
+      el("div", { class: "venue-head" },
+        chainBadge(cinema.chain),
+        el("h2", { text: cinema.name }),
+        !state.city ? el("span", { class: "muted", text: cinema.city }) : null),
+      main,
+      more.length ? el("div", { class: "next-more" },
+        el("span", { class: "muted", text: "Después:" }), more) : null));
 }
 
 function renderSources() {
