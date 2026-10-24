@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://scrapercinema.netlify.app/sitemap.xml
+Sitemap: https://cinealtoque.netlify.app/sitemap.xml
